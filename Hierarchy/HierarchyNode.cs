@@ -8,5 +8,4 @@ namespace Hierarchy
         public IList<IHierarchyNode<TData>> Children { get; set; } = new List<IHierarchyNode<TData>>();
         public TData? Data { get; set; }
     }
-
 }

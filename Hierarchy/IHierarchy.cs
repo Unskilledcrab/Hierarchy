@@ -5,5 +5,4 @@
         public TKey Id { get; set; }
         public TKey ParentId { get; set; }
     }
-
 }
