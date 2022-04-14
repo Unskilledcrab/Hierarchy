@@ -1,4 +1,4 @@
-[![Nuget](https://github.com/Unskilledcrab/hierarchy/actions/workflows/Nuget.yml/badge.svg)](https://github.com/Unskilledcrab/hierarchy/actions/workflows/Nuget.yml)
+[![Nuget](https://github.com/Unskilledcrab/Hierarchy/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Unskilledcrab/Hierarchy/actions/workflows/dotnet.yml)
 
 # Hierarchy
 
