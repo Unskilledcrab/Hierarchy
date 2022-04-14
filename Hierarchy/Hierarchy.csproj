@@ -1,9 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
-	<LangVersion>10.0</LangVersion>
+        <TargetFramework>netstandard2.1</TargetFramework>
+	<Nullable>enable</Nullable>
+	<LangVersion>10.0</LangVersion>	  
+	<Company>Original Technical Systems LLC</Company>
+	<Description>A library for handling hierarchical data using intuative linq extension methods</Description>
+	<RepositoryUrl>https://github.com/Unskilledcrab/hierarchy</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>.net standard; library</PackageTags>
+	<PackageReleaseNotes>initial release</PackageReleaseNotes>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<SignAssembly>False</SignAssembly>
+	<Version></Version>
   </PropertyGroup>
 
 </Project>
