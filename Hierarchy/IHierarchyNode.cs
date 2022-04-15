@@ -6,6 +6,6 @@ namespace Hierarchy
     {
         public IHierarchyNode<TData>? Parent { get; set; }
         public IList<IHierarchyNode<TData>> Children { get; set; }
-        public TData? Data { get; set; }
+        public TData Data { get; set; }
     }
 }

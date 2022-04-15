@@ -37,12 +37,25 @@ private List<Example> flatList = new()
 
 private void TestTraversalMethod()
 {
+    // We convert the flat list to a hierarchy
     var hierarchyList = flatList.ToHierarchy(t => t.Id, t => t.ParentId);
-    var node = hierarchyList.FirstOrDefault(n => n.Data?.Id == 7); // Returns the node with Id 7
-    var siblingNodes = node.GetAllSiblingNodes(); // Returns the following nodes { 5, 6, 8 }  (NOTE: This excludes the node being used)
-    var childNodes = node.GetAllChildrenNodes(); // Returns the following nodes { 13, 14 }
-    var parentNodes = node.GetAllParentNodes(); // Returns the following nodes { 4 }
-    var leafNodes = node.GetLeafNodes(); // Returns the following node { 14 } 
-    var rootNode = node.GetRootNode(); // Returns
+
+    // We search through all nodes in the hierarchy for the one with Id = 7
+    var node = hierarchyList.AllNodes().FirstOrDefault(n => n.Data?.Id == 7); // Returns the node with Id 7
+
+    // We get all other nodes that are at the same level as this node
+    var siblingNodes = node.SiblingNodes(); // Returns the following nodes { 5, 6, 8 }  (NOTE: This excludes the node being used)
+
+    // We get all descendant nodes of this node
+    var childNodes = node.DescendantNodes(); // Returns the following nodes { 13, 14 }
+
+    // We get all ancestor nodes of this node
+    var parentNodes = node.AncestorNodes(); // Returns the following nodes { 4 }
+
+    // We get all leaf nodes (descendant nodes that do not have childen) of this node
+    var leafNodes = node.LeafNodes(); // Returns the following node { 14 } 
+
+    // We get the top level node of this branch (the highest level ancestor)
+    var rootNode = node.RootNode(); // Returns the following node { 4 }
 }
 ```

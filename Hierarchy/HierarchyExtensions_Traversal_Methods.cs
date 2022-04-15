@@ -19,7 +19,7 @@ namespace Hierarchy
             return node;
         }
 
-        public static IEnumerable<IHierarchyNode<TData>> GetAllSiblingNodes<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<IHierarchyNode<TData>> SiblingNodes<TData>(this IHierarchyNode<TData> node)
         {
             if (node.Parent is null)
             {
@@ -34,34 +34,34 @@ namespace Hierarchy
                 }
             }
         }
-        public static IEnumerable<TData?> GetAllSiblingNodesData<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<TData> SiblingNodesData<TData>(this IHierarchyNode<TData> node)
         {
-            foreach (var sibling in node.GetAllSiblingNodes())
+            foreach (var sibling in node.SiblingNodes())
             {
                 yield return sibling.Data;
             }
         }
 
-        public static IEnumerable<IHierarchyNode<TData>> GetAllChildrenNodes<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<IHierarchyNode<TData>> DescendantNodes<TData>(this IHierarchyNode<TData> node)
         {
             foreach (var child in node.Children)
             {
                 yield return child;
-                foreach (var grandChild in child.GetAllChildrenNodes())
+                foreach (var grandChild in child.DescendantNodes())
                 {
                     yield return grandChild;
                 }
             }
         }
-        public static IEnumerable<TData?> GetAllChildrenNodesData<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<TData> DescendantNodesData<TData>(this IHierarchyNode<TData> node)
         {
-            foreach (var child in node.GetAllChildrenNodes())
+            foreach (var child in node.DescendantNodes())
             {
                 yield return child.Data;
             }
         }
 
-        public static IEnumerable<IHierarchyNode<TData>> GetAllParentNodes<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<IHierarchyNode<TData>> AncestorNodes<TData>(this IHierarchyNode<TData> node)
         {
             if (node.Parent is null)
             {
@@ -69,20 +69,20 @@ namespace Hierarchy
             }
 
             yield return node.Parent;
-            foreach (var grandParent in node.Parent.GetAllParentNodes())
+            foreach (var grandParent in node.Parent.AncestorNodes())
             {
                 yield return grandParent;
             }
         }
-        public static IEnumerable<TData?> GetAllParentNodesData<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<TData> AncestorNodesData<TData>(this IHierarchyNode<TData> node)
         {
-            foreach (var parent in node.GetAllParentNodes())
+            foreach (var parent in node.AncestorNodes())
             {
                 yield return parent.Data;
             }
         }
 
-        public static IHierarchyNode<TData> GetRootNode<TData>(this IHierarchyNode<TData> node)
+        public static IHierarchyNode<TData> RootNode<TData>(this IHierarchyNode<TData> node)
         {
             var parentNode = node.Parent;
             while (parentNode is not null)
@@ -92,28 +92,28 @@ namespace Hierarchy
             }
             return node;
         }
-        public static TData? GetRootNodeData<TData>(this IHierarchyNode<TData> node)
+        public static TData RootNodeData<TData>(this IHierarchyNode<TData> node)
         {
-            return node.GetRootNode().Data;
+            return node.RootNode().Data;
         }
 
-        public static IEnumerable<IHierarchyNode<TData>> FromBranchToFlatNodeList<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<IHierarchyNode<TData>> FromNodeToFlatNodeList<TData>(this IHierarchyNode<TData> node)
         {
             yield return node;
-            foreach (var child in node.GetAllChildrenNodes())
+            foreach (var child in node.DescendantNodes())
             {
                 yield return child;
             }
         }
-        public static IEnumerable<TData?> FromBranchToFlatNodeDataList<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<TData> FromNodeToFlatNodeDataList<TData>(this IHierarchyNode<TData> node)
         {
-            foreach (var hierarchyNode in node.FromBranchToFlatNodeList())
+            foreach (var hierarchyNode in node.FromNodeToFlatNodeList())
             {
                 yield return hierarchyNode.Data;
             }
         }
 
-        public static IEnumerable<IHierarchyNode<TData>> GetLeafNodes<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<IHierarchyNode<TData>> LeafNodes<TData>(this IHierarchyNode<TData> node)
         {
             if (node.Children is null || node.Children.Count == 0)
             {
@@ -122,15 +122,15 @@ namespace Hierarchy
             }
             foreach (var child in node.Children)
             {
-                foreach (var leaf in child.GetLeafNodes())
+                foreach (var leaf in child.LeafNodes())
                 {
                     yield return leaf;
                 }
             }
         }
-        public static IEnumerable<TData?> GetLeafNodesData<TData>(this IHierarchyNode<TData> node)
+        public static IEnumerable<TData> LeafNodesData<TData>(this IHierarchyNode<TData> node)
         {
-            foreach (var leafNode in node.GetLeafNodes())
+            foreach (var leafNode in node.LeafNodes())
             {
                 yield return leafNode.Data;
             }
@@ -141,7 +141,7 @@ namespace Hierarchy
             foreach (var node in hierarchyNodes)
             {
                 yield return node;
-                foreach (var childNode in node.GetAllChildrenNodes())
+                foreach (var childNode in node.DescendantNodes())
                 {
                     yield return childNode;
                 }
@@ -153,6 +153,11 @@ namespace Hierarchy
             {
                 yield return hierarchyNode.Data;
             }
+        }
+
+        public static IEnumerable<IHierarchyNode<TData>> AllNodes<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes)
+        {
+            return hierarchyNodes.ToFlatNodeList();
         }
     }
 }
