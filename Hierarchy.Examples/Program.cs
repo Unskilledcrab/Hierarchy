@@ -26,10 +26,10 @@ List<Person> flatList = new()
     new() { Id = 24, ParentId = 22, Name = "Financial Project 2: Grunt 2" },
     new() { Id = 25, ParentId = 22, Name = "Financial Project 2: Grunt 3" },
     new() { Id = 26, ParentId = 22, Name = "Financial Project 2: Grunt 4" },
-    new() { Id = 27, ParentId = 26, Name = "Financial Project 2: Grunt 1" },
-    new() { Id = 28, ParentId = 26, Name = "Financial Project 2: Grunt 2" },
-    new() { Id = 29, ParentId = 26, Name = "Financial Project 2: Grunt 3" },
-    new() { Id = 30, ParentId = 26, Name = "Financial Project 2: Grunt 4" },
+    new() { Id = 27, ParentId = 26, Name = "Financial Project 2: Leaf 1" },
+    new() { Id = 28, ParentId = 26, Name = "Financial Project 2: Leaf 2" },
+    new() { Id = 29, ParentId = 26, Name = "Financial Project 2: Leaf 3" },
+    new() { Id = 30, ParentId = 26, Name = "Financial Project 2: Leaf 4" },
     new() { Id = 8, ParentId = 4, Name = "Marketing Manager" },
     new() { Id = 9, ParentId = 0, Name = "COO" },
 };
@@ -38,28 +38,28 @@ var hierarchyList = flatList.ToHierarchy(t => t.Id, t => t.ParentId);
 Console.WriteLine("We convert the flat list to a hierarchy");
 Console.WriteLine(hierarchyList.PrintTree());
 
-var node = hierarchyList.AllNodes().First(n => n.Data.Id == 7); // Returns the node with Id 7
-Console.WriteLine("We search through all nodes in the hierarchy for the one with Id = 7");
+var node = hierarchyList.AllNodes().First(n => n.Data.Id == 14); 
+Console.WriteLine("We search through all nodes in the hierarchy for the one with this id");
 Console.WriteLine(node.Data);
 Console.WriteLine();
 
-var siblingNodes = node.SiblingNodes(); // Returns the following nodes { 5, 6, 8 }  (NOTE: This excludes the node being used)
+var siblingNodes = node.SiblingNodes();
 Console.WriteLine("We get all other nodes that are at the same level as this node");
 Console.WriteLine(siblingNodes.PrintNodes());
 
-var childNodes = node.DescendantNodes(); // Returns the following nodes { 13, 14 }
+var childNodes = node.DescendantNodes();
 Console.WriteLine("We get all descendant nodes of this node");
 Console.WriteLine(childNodes.PrintNodes());
 
-var parentNodes = node.AncestorNodes(); // Returns the following nodes { 4 }
+var parentNodes = node.AncestorNodes(); 
 Console.WriteLine("We get all ancestor nodes of this node");
 Console.WriteLine(parentNodes.PrintNodes());
 
-var leafNodes = node.LeafNodes(); // Returns the following node { 14 } 
+var leafNodes = node.LeafNodes();
 Console.WriteLine("We get all leaf nodes (descendant nodes that do not have childen) of this node");
 Console.WriteLine(leafNodes.PrintNodes());
 
-var rootNode = node.RootNode(); // Returns the following node { 4 }
+var rootNode = node.RootNode(); 
 Console.WriteLine("We get the top level node of this branch (the highest level ancestor)");
 Console.WriteLine(rootNode.Data);
 
