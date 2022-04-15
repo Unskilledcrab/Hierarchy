@@ -50,10 +50,10 @@ List<Person> flatList = new()
     new() { Id = 24, ParentId = 22, Name = "Financial Project 2: Grunt 2" },
     new() { Id = 25, ParentId = 22, Name = "Financial Project 2: Grunt 3" },
     new() { Id = 26, ParentId = 22, Name = "Financial Project 2: Grunt 4" },
-    new() { Id = 27, ParentId = 26, Name = "Financial Project 2: Grunt 1" },
-    new() { Id = 28, ParentId = 26, Name = "Financial Project 2: Grunt 2" },
-    new() { Id = 29, ParentId = 26, Name = "Financial Project 2: Grunt 3" },
-    new() { Id = 30, ParentId = 26, Name = "Financial Project 2: Grunt 4" },
+    new() { Id = 27, ParentId = 26, Name = "Financial Project 2: Leaf 1" },
+    new() { Id = 28, ParentId = 26, Name = "Financial Project 2: Leaf 2" },
+    new() { Id = 29, ParentId = 26, Name = "Financial Project 2: Leaf 3" },
+    new() { Id = 30, ParentId = 26, Name = "Financial Project 2: Leaf 4" },
     new() { Id = 8, ParentId = 4, Name = "Marketing Manager" },
     new() { Id = 9, ParentId = 0, Name = "COO" },
 };
@@ -62,28 +62,30 @@ var hierarchyList = flatList.ToHierarchy(t => t.Id, t => t.ParentId);
 Console.WriteLine("We convert the flat list to a hierarchy");
 Console.WriteLine(hierarchyList.PrintTree());
 
-var node = hierarchyList.AllNodes().First(n => n.Data.Id == 7); // Returns the node with Id 7
-Console.WriteLine("We search through all nodes in the hierarchy for the one with Id = 7");
+// NOTE: When you want to search through the entire tree, you must start with the **AllNodes()** extension method 
+//       this will make sure you aren't performing linq operations just on the nodes at the top level
+var node = hierarchyList.AllNodes().First(n => n.Data.Id == 14); 
+Console.WriteLine("We search through all nodes in the hierarchy for the one with this id");
 Console.WriteLine(node.Data);
 Console.WriteLine();
 
-var siblingNodes = node.SiblingNodes(); // Returns the following nodes { 5, 6, 8 }  (NOTE: This excludes the node being used)
+var siblingNodes = node.SiblingNodes();
 Console.WriteLine("We get all other nodes that are at the same level as this node");
 Console.WriteLine(siblingNodes.PrintNodes());
 
-var childNodes = node.DescendantNodes(); // Returns the following nodes { 13, 14 }
+var childNodes = node.DescendantNodes();
 Console.WriteLine("We get all descendant nodes of this node");
 Console.WriteLine(childNodes.PrintNodes());
 
-var parentNodes = node.AncestorNodes(); // Returns the following nodes { 4 }
+var parentNodes = node.AncestorNodes(); 
 Console.WriteLine("We get all ancestor nodes of this node");
 Console.WriteLine(parentNodes.PrintNodes());
 
-var leafNodes = node.LeafNodes(); // Returns the following node { 14 } 
+var leafNodes = node.LeafNodes();
 Console.WriteLine("We get all leaf nodes (descendant nodes that do not have childen) of this node");
 Console.WriteLine(leafNodes.PrintNodes());
 
-var rootNode = node.RootNode(); // Returns the following node { 4 }
+var rootNode = node.RootNode(); 
 Console.WriteLine("We get the top level node of this branch (the highest level ancestor)");
 Console.WriteLine(rootNode.Data);
 
@@ -113,10 +115,10 @@ Person: 4 'CFO'
 │   │       ├─ Person: 24 'Financial Project 2: Grunt 2'
 │   │       ├─ Person: 25 'Financial Project 2: Grunt 3'
 │   │       └─ Person: 26 'Financial Project 2: Grunt 4'
-│   │           ├─ Person: 27 'Financial Project 2: Grunt 1'
-│   │           ├─ Person: 28 'Financial Project 2: Grunt 2'
-│   │           ├─ Person: 29 'Financial Project 2: Grunt 3'
-│   │           └─ Person: 30 'Financial Project 2: Grunt 4'
+│   │           ├─ Person: 27 'Financial Project 2: Leaf 1'
+│   │           ├─ Person: 28 'Financial Project 2: Leaf 2'
+│   │           ├─ Person: 29 'Financial Project 2: Leaf 3'
+│   │           └─ Person: 30 'Financial Project 2: Leaf 4'
 │   └─ Person: 13 'Financial Project 1: Lead'
 │       ├─ Person: 15 'Financial Project 1: Member 1'
 │       ├─ Person: 16 'Financial Project 1: Member 2'
@@ -125,16 +127,13 @@ Person: 4 'CFO'
 └─ Person: 8 'Marketing Manager'
 Person: 9 'COO'
 
-We search through all nodes in the hierarchy for the one with Id = 7
-Person: 7 'Financial Senior Team Lead'
+We search through all nodes in the hierarchy for the one with this id
+Person: 14 'Financial Project 2: Lead'
 
 We get all other nodes that are at the same level as this node
-Person: 5 'Financial Manager'
-Person: 6 'Financial Designer'
-Person: 8 'Marketing Manager'
+Person: 13 'Financial Project 1: Lead'
 
 We get all descendant nodes of this node
-Person: 14 'Financial Project 2: Lead'
 Person: 19 'Financial Project 2: Member 1'
 Person: 20 'Financial Project 2: Member 2'
 Person: 21 'Financial Project 2: Member 3'
@@ -143,17 +142,13 @@ Person: 23 'Financial Project 2: Grunt 1'
 Person: 24 'Financial Project 2: Grunt 2'
 Person: 25 'Financial Project 2: Grunt 3'
 Person: 26 'Financial Project 2: Grunt 4'
-Person: 27 'Financial Project 2: Grunt 1'
-Person: 28 'Financial Project 2: Grunt 2'
-Person: 29 'Financial Project 2: Grunt 3'
-Person: 30 'Financial Project 2: Grunt 4'
-Person: 13 'Financial Project 1: Lead'
-Person: 15 'Financial Project 1: Member 1'
-Person: 16 'Financial Project 1: Member 2'
-Person: 17 'Financial Project 1: Member 3'
-Person: 18 'Financial Project 1: Member 4'
+Person: 27 'Financial Project 2: Leaf 1'
+Person: 28 'Financial Project 2: Leaf 2'
+Person: 29 'Financial Project 2: Leaf 3'
+Person: 30 'Financial Project 2: Leaf 4'
 
 We get all ancestor nodes of this node
+Person: 7 'Financial Senior Team Lead'
 Person: 4 'CFO'
 
 We get all leaf nodes (descendant nodes that do not have childen) of this node
@@ -163,15 +158,12 @@ Person: 21 'Financial Project 2: Member 3'
 Person: 23 'Financial Project 2: Grunt 1'
 Person: 24 'Financial Project 2: Grunt 2'
 Person: 25 'Financial Project 2: Grunt 3'
-Person: 27 'Financial Project 2: Grunt 1'
-Person: 28 'Financial Project 2: Grunt 2'
-Person: 29 'Financial Project 2: Grunt 3'
-Person: 30 'Financial Project 2: Grunt 4'
-Person: 15 'Financial Project 1: Member 1'
-Person: 16 'Financial Project 1: Member 2'
-Person: 17 'Financial Project 1: Member 3'
-Person: 18 'Financial Project 1: Member 4'
+Person: 27 'Financial Project 2: Leaf 1'
+Person: 28 'Financial Project 2: Leaf 2'
+Person: 29 'Financial Project 2: Leaf 3'
+Person: 30 'Financial Project 2: Leaf 4'
 
 We get the top level node of this branch (the highest level ancestor)
 Person: 4 'CFO'
+
 ```
