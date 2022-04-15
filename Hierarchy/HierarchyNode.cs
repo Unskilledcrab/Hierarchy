@@ -4,8 +4,13 @@ namespace Hierarchy
 {
     public class HierarchyNode<TData> : IHierarchyNode<TData>
     {
-        public IHierarchyNode<TData>? Parent { get; set; }
+        public IHierarchyNode<TData> Parent { get; set; }
         public IList<IHierarchyNode<TData>> Children { get; set; } = new List<IHierarchyNode<TData>>();
-        public TData? Data { get; set; }
+        public TData Data { get; set; } = default;
+
+        public override string ToString()
+        {
+            return Data.ToString();
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Hierarchy
 {
@@ -158,6 +161,61 @@ namespace Hierarchy
         public static IEnumerable<IHierarchyNode<TData>> AllNodes<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes)
         {
             return hierarchyNodes.ToFlatNodeList();
+        }
+
+        public static string PrintTree<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes, int level = 0, string indenter = "│   ", int indentSize = 0, StringBuilder sb = null)
+        {
+            if (sb == null)
+            {
+                sb = new StringBuilder();
+                indentSize = indenter.Length;
+            }
+
+            var isLastNode = false;
+            var indenterBuffer = indenter;
+            foreach (var node in hierarchyNodes)
+            {
+                if (level > 0)
+                {
+                    if (level > 1)
+                    { 
+                        sb.Append(indenter);
+                    }
+
+                    if (node.Parent.Children.Last() == node)
+                    {
+                        sb.AppendLine($"└─ {node}");
+                        isLastNode = true;
+                    }
+                    else
+                    {
+                        sb.AppendLine($"├─ {node}");
+                    }
+                    if (level > 1)
+                    {
+                        indenterBuffer = isLastNode ? $"{indenter}{new string(' ', indentSize)}" : $"{indenter}{indenter}";
+                    }
+                }
+                else
+                {
+                    sb.AppendLine(node.ToString());
+                }
+                node.Children.PrintTree(level + 1, indenterBuffer, indentSize, sb);
+            }
+
+            return sb.ToString();
+        }
+
+        public static string PrintNodes<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var node in hierarchyNodes)
+            {
+                sb.AppendLine(node.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

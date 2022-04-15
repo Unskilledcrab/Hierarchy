@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hierarchy.Examples", "Hierarchy.Examples\Hierarchy.Examples.csproj", "{B23974C1-1336-4D0E-9357-1AFB25FD5F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{A4709ED9-734B-4755-9348-9B1043DF749B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4709ED9-734B-4755-9348-9B1043DF749B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4709ED9-734B-4755-9348-9B1043DF749B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B23974C1-1336-4D0E-9357-1AFB25FD5F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23974C1-1336-4D0E-9357-1AFB25FD5F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23974C1-1336-4D0E-9357-1AFB25FD5F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23974C1-1336-4D0E-9357-1AFB25FD5F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
