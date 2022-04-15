@@ -4,6 +4,21 @@ namespace Hierarchy
 {
     public static partial class HierarchyExtensions
     {
+        public static THierarchyNode AddChild<THierarchyNode, TData>(this THierarchyNode node, TData childData)
+            where THierarchyNode : IHierarchyNode<TData>, new()
+        {
+            node.Children.Add(new THierarchyNode() { Data = childData, Parent = node });
+            return node;
+        }
+
+        public static THierarchyNode AddChild<THierarchyNode, TData>(this THierarchyNode node, THierarchyNode childNode)
+            where THierarchyNode : IHierarchyNode<TData>, new()
+        {
+            childNode.Parent = node;
+            node.Children.Add(childNode);
+            return node;
+        }
+
         public static IEnumerable<IHierarchyNode<TData>> GetAllSiblingNodes<TData>(this IHierarchyNode<TData> node)
         {
             if (node.Parent is null)
@@ -132,7 +147,7 @@ namespace Hierarchy
                 }
             }
         }
-        public static IEnumerable<TData?> ToFlatDataList<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes)
+        public static IEnumerable<TData> ToFlatDataList<TData>(this IEnumerable<IHierarchyNode<TData>> hierarchyNodes)
         {
             foreach (var hierarchyNode in hierarchyNodes.ToFlatNodeList())
             {
