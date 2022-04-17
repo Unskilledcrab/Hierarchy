@@ -35,13 +35,13 @@ namespace Hierarchy
                 {
                     if (parentId is null || !lookup.TryGetValue(parentId, out var parent) || parentId.Equals(rootId))
                     {
-                        yield return item;
                         continue;
                     }
 
                     parent.Children.Add(item);
                     item.Parents.Add(parent);
                 }
+                yield return item;
             }
         }
 

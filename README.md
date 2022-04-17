@@ -5,11 +5,33 @@ A .Net Standard library that can be used for hierarchical data
 
 ## Getting Started
 1. Install the package from [NuGet](https://www.nuget.org/packages/Hierarchy)
-2. Transform any flat hierarchical list into a hierarchical tree structure by using the **ToHierarchy** extension method
-3. Use other extension methods to perform operations on the new Hierarchy list.
+2. Transform any flat hierarchical or graph list into a hierarchy or graph tree structure by using the **ToHierarchy** or **ToGraph** extension methods
+3. Use other extension methods to perform operations on the new tree list.
+
+## Traversal Methods
+After building a hierarchy or graph there are two main forms of traversing the trees
+
+- Breadth First
+- Depth First
+
+With a breadth first traversal the algorithm will enumerate through the entirety of the closests nodes in the closet layer before enumerating through the next layer.
+This is a more performant traversal method to use when you know that what you are searching for is near the node you are searching on and is typically the desired search method.
+For this reason, this is the default algorithm used in traversal methods.
+
+With a depth first traversal the algorithm will enumerate through each relationship of a node before moving on to another node in the layer.
+This can sometimes be desireable if you have extremely large layers but shallow depth and you know that what you are searching for is deeper in the tree.
+
+Each of these methods has preventions in place for cyclic data (i.e. it will not get stuck in an infinite loop)
 
 ## Hierarchy
-A hierarchy is a structure in which each node can only ever have a single parent node (or no parent in the case of a root node)
+A hierarchy is a structure in which each node can only ever have a single parent node (or no parent in the case of a root node).
+When building a hierarchy, there can not be any cyclic relationships (i.e. you can not have a node reference itself as the parent node).
+You can optionally set a specific root id when building a hierarchy. This is useful if you have hierarchical data that has a specific parent id for root nodes like '-1'
+By default it will build the hierarchy root nodes in the if any of the following conditions are met
+
+- The parent id is null
+- The parent id is not found in the flat list
+- The parent id is the default datatype (i.e. if it is an int then the root node will have a parent id of '0') 
 
 ### Hierarchy Example
 ```csharp
@@ -61,13 +83,15 @@ List<Person> flatList = new()
     new() { Id = 9, ParentId = 0, Name = "COO" },
 };
 
-// NOTE: You can order the incoming list before building the hierarchy to make sure that your hierarchy is ordered
+// NOTE: You can order the incoming list before building the hierarchy 
+//       to make sure that your hierarchy is ordered
 //       the way you want it to be before presenting and traversing it
 var hierarchyList = flatList.OrderBy(f => f.Id).ToHierarchy(t => t.Id, t => t.ParentId);
 Console.WriteLine("We convert the flat list to a hierarchy");
 Console.WriteLine(hierarchyList.PrintTree());
 
-// NOTE: When you want to search through the entire tree, you must start with the **AllNodes()** extension method 
+// NOTE: When you want to search through the entire tree, 
+//       you must start with the **AllNodes()** extension method 
 //       this will make sure you aren't performing linq operations just on the nodes at the top level
 var node = hierarchyList.AllNodes().First(n => n.Data.Id == 14);
 Console.WriteLine("We search through all nodes in the hierarchy for the one with this id");
@@ -208,7 +232,16 @@ Person: 4 'CFO'
 ```
 
 ## Graphs
-A graph structure can have multiple parents and children, because of this there are a different set of traversal methods that are used.
+A graph structure can have multiple parents and children, because of this there is allowed to be cyclic relationships.
+You can optionally set a specific root id when building a graph. 
+The majority of the time you will want to specify this root node to get back a specific section of the graph.
+Because a graph can be cyclic in nature, the 'root' node(s) can be a node with parent nodes.
+In this context a root node is just the node(s) that are returned to you as the first level to be enumerated over.
+By default it will build the graph root nodes in the if any of the following conditions are met
+
+- The parent id is null
+- The parent id is not found in the flat list
+- The parent id is the default datatype (i.e. if it is an int then the root node will have a parent id of '0') 
 
 ### Graph Example 
 ```csharp
