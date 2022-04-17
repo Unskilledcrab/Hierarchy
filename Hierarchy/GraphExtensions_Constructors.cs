@@ -16,7 +16,7 @@ namespace Hierarchy
         /// <param name="idSelector">Returns the unique identifier for this item</param>
         /// <param name="parentIdsSelector">Returns the parent id for this item</param>
         /// <returns>A hierarchical model for each item wrapped in a hierarchy node to be able to traverse the hierarchy</returns>
-        private static IEnumerable<TGraphModel> ToGraphInternal<TGraphModel, TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector, TKey rootId = default)
+        private static IEnumerable<TGraphModel> ToGraphInternal<TGraphModel, TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector)
             where TGraphModel : IGraphNode<TData>, new()
         {
             var lookup = flatList.Where(item => item is not null && idSelector(item) is not null)
@@ -35,7 +35,7 @@ namespace Hierarchy
                 {
                     foreach (var parentId in parentIds)
                     {
-                        if (parentId is null || !lookup.TryGetValue(parentId, out var parent) || parentId.Equals(rootId))
+                        if (parentId is null || !lookup.TryGetValue(parentId, out var parent))
                         {
                             continue;
                         }
@@ -48,18 +48,18 @@ namespace Hierarchy
             }
         }
 
-        public static List<TGraphModel> ToGraph<TGraphModel, TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector, TKey rootId = default)
+        public static List<TGraphModel> ToGraph<TGraphModel, TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector)
             where TGraphModel : IGraphNode<TData>, new()
         {
             // NOTE: If we do not call ToList() here then the children will not be present in future calls.
             //       We must do at least one iteration through the call to make sure that the parent child
             //       relationship is built
-            return flatList.ToGraphInternal<TGraphModel, TData, TKey>(idSelector, parentIdsSelector, rootId).ToList();
+            return flatList.ToGraphInternal<TGraphModel, TData, TKey>(idSelector, parentIdsSelector).ToList();
         }
 
-        public static List<GraphNode<TData>> ToGraph<TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector, TKey rootId = default)
+        public static List<GraphNode<TData>> ToGraph<TData, TKey>(this IEnumerable<TData> flatList, Func<TData, TKey> idSelector, Func<TData, IEnumerable<TKey>> parentIdsSelector)
         {
-            return flatList.ToGraph<GraphNode<TData>, TData, TKey>(idSelector, parentIdsSelector, rootId);
+            return flatList.ToGraph<GraphNode<TData>, TData, TKey>(idSelector, parentIdsSelector);
         }
     }
 }

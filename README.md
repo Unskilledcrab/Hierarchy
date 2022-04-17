@@ -236,17 +236,7 @@ Person: 4 'CFO'
 
 ## Graphs
 A graph structure can have multiple parents and children, because of this there is allowed to be cyclic relationships.
-You can optionally set a specific root id when building a graph. 
-The majority of the time you will want to specify this root node to get back a specific section of the graph.
-Because a graph can be cyclic in nature, the 'root' node(s) can be a node with parent nodes.
-In this context a root node is just the node(s) that are returned to you as the first level to be enumerated over.
-By default it will build the graph root nodes in the if any of the following conditions are met
-
-- The parent id is null
-- The parent id is not found in the flat list
-- The parent id is the default datatype (i.e. if it is an int then the root node will have a parent id of '0') 
-
-Since by design a graph node may not have any 'root' nodes, when the 'ToGraph' extension method is used, you will be returned the same flat list but
+Since by design a graph does not have any 'root' nodes, when the 'ToGraph' extension method is used, you will be returned the same flat list but
 it will build all of the relationships and wrap the data in an **IGraphNode** model to be able to perform common traversal extension methods on.
 
 ### Graph Example 
