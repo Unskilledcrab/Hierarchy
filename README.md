@@ -33,6 +33,9 @@ By default it will build the hierarchy root nodes in the if any of the following
 - The parent id is not found in the flat list
 - The parent id is the default datatype (i.e. if it is an int then the root node will have a parent id of '0') 
 
+Since hierarchies will always have a root node(s), when you use the **ToHierarchy** extension method, you will be returned the root nodes. Each of the root nodes will
+have their descendant nodes relationship fully defined so you can traverse the tree by enumerating through their children or using the traversal extension methods provided.
+
 ### Hierarchy Example
 ```csharp
 using Hierarchy;
@@ -242,6 +245,9 @@ By default it will build the graph root nodes in the if any of the following con
 - The parent id is null
 - The parent id is not found in the flat list
 - The parent id is the default datatype (i.e. if it is an int then the root node will have a parent id of '0') 
+
+Since by design a graph node may not have any 'root' nodes, when the 'ToGraph' extension method is used, you will be returned the same flat list but
+it will build all of the relationships and wrap the data in an **IGraphNode** model to be able to perform common traversal extension methods on.
 
 ### Graph Example 
 ```csharp

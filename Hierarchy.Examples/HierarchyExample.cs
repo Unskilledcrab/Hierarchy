@@ -41,7 +41,7 @@
             // NOTE: You can order the incoming list before building the hierarchy to make sure that your hierarchy is ordered
             //       the way you want it to be before presenting and traversing it
             var hierarchyList = flatList.OrderBy(f => f.Id).ToHierarchy(t => t.Id, t => t.ParentId);
-            Console.WriteLine("We convert the flat list to a hierarchy");
+            Console.WriteLine("We convert the flat list to a hierarchy tree");
             Console.WriteLine(hierarchyList.PrintTree());
 
             // NOTE: When you want to search through the entire tree, you must start with the **AllNodes()** extension method 

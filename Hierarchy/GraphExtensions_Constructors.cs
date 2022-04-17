@@ -31,15 +31,18 @@ namespace Hierarchy
             foreach (var item in lookup.Values)
             {
                 var parentIds = parentIdsSelector(item.Data);
-                foreach (var parentId in parentIds)
+                if (parentIds is not null)
                 {
-                    if (parentId is null || !lookup.TryGetValue(parentId, out var parent) || parentId.Equals(rootId))
+                    foreach (var parentId in parentIds)
                     {
-                        continue;
-                    }
+                        if (parentId is null || !lookup.TryGetValue(parentId, out var parent) || parentId.Equals(rootId))
+                        {
+                            continue;
+                        }
 
-                    parent.Children.Add(item);
-                    item.Parents.Add(parent);
+                        parent.Children.Add(item);
+                        item.Parents.Add(parent);
+                    }
                 }
                 yield return item;
             }

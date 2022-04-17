@@ -4,7 +4,6 @@
     {
         public void Test()
         {
-
             List<PersonRelationships> flatList = new()
             {
                 new() { Id = 1, KnownRelationshipIds = new int[] { 2, 3, 4 }, Name = "Bob" },
@@ -17,8 +16,8 @@
                 new() { Id = 8, KnownRelationshipIds = new int[] { 1, 2, 3 }, Name = "Cake" },
             };
 
-            var hierarchyList = flatList.OrderBy(f => f.Id).ToGraph(t => t.Id, t => t.KnownRelationshipIds);
-            Console.WriteLine("We convert the flat list to a hierarchy");
+            var graphList = flatList.OrderBy(f => f.Id).ToGraph(t => t.Id, t => t.KnownRelationshipIds);
+            Console.WriteLine("We convert the flat list to a graph tree");
             //Console.WriteLine(hierarchyList.PrintTree());
 
             //var node = hierarchyList.AllNodes().First(n => n.Data.Id == 14);
